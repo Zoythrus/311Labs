@@ -200,30 +200,27 @@ bool counting(vector<int> &A, const int k){
 	//check to see if A exists and k is in the range of 0 and 1000
 	cout << "yes1";
 	if (A.size() != 0 && k >= 0 && k <= 1000){
-		int x, size;
-		size = A.size();
-		vector<int> Z;
+
+		int C[k];
+		int y;
 		
 		//for loop that crawls through A, making sure that A's value is the right size
-		for (int i=0; i<size; i++){
-			x=k;
+		for (int i=0; i<A.size(); i++){
 			if (A[i] >= 0 && A[i] <= k){
-				//for loop that finds the smallest number and adds it to temp vector Z
-				for (int j=0; j<size; j++){
-					if (x < A[j]){
-						x=A[j];
-					}
-				}
-				Z.push_back(x);
-				
+				int x = A[i];
+				C[x]++;
 			}
 			else return false;
 			
 		}
-		//for loop that adds Z's values to A
-		for (int l=0;l<size;l++){
-			A[l]=Z[l];
-		}
+		
+		for (int j=0; j<k; j++){
+				if (C[j] >0){
+					A[y]=C[j];
+					y++;
+				}
+			
+		}	
 		return true;
 	}
 	else return false;
