@@ -198,27 +198,31 @@ int main(){
 
 bool counting(vector<int> &A, const int k){
 	//check to see if A exists and k is in the range of 0 and 1000
-	cout << "yes1";
-	if (A.size() != 0 && k >= 0 && k <= 1000){
 
+	if (A.size() != 0 && k >= 0 && k <= 1000){
 		int C[k];
-		int y;
-		
+		int y=0;
+		int x=0;
+
+		//for loop that zeroes out C
+		for(int h=0; h<k+1; h++){
+			C[h]=0;
+		}	
 		//for loop that crawls through A, making sure that A's value is the right size
 		for (int i=0; i<A.size(); i++){
 			if (A[i] >= 0 && A[i] <= k){
-				int x = A[i];
+				x = A[i];
 				C[x]++;
 			}
 			else return false;
 			
 		}
-		
-		for (int j=0; j<k; j++){
-				if (C[j] >0){
-					A[y]=C[j];
-					y++;
-				}
+		for (int j=0; j<k+1; j++){
+			while (C[j] >0){
+				A[y]=j;
+				y++;
+				C[j]--;
+			}
 			
 		}	
 		return true;
