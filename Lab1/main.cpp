@@ -196,9 +196,20 @@ int main(){
 
 }//main()
 
-bool counting(vector<int> &A, const int k){
-	//check to see if A exists and k is in the range of 0 and 1000
 
+/*
+This is the Counting function that sorts the values inside vector A by ascending order.
+
+Step 1: This function first checks to make sure that vector A is not empty and that the constant k is within 0 and 1000.
+Step 2: The function then creates array C of size k and zeroes it out.
+Step 3: The function crawls through A, checking to make sure the values at the appropriate index are both positive and less than k.
+Step 4: The value at the index of C increments by 1 for every time it passes by the appropriate value at the index number in A.
+Step 5: C then repopulates A with the values properly sorted.
+
+*/
+bool counting(vector<int> &A, const int k){	
+	
+	//check to see if A exists and k is in the range of 0 and 1000
 	if (A.size() != 0 && k >= 0 && k <= 1000){
 		int C[k];
 		int y=0;
@@ -211,12 +222,14 @@ bool counting(vector<int> &A, const int k){
 		//for loop that crawls through A, making sure that A's value is the right size
 		for (int i=0; i<A.size(); i++){
 			if (A[i] >= 0 && A[i] <= k){
+				//x holds the value at the index of A, then uses that to increment the value at that index of C
 				x = A[i];
 				C[x]++;
 			}
 			else return false;
 			
 		}
+		//for loop that uses the values in C to repopulate A in the proper order
 		for (int j=0; j<k+1; j++){
 			while (C[j] >0){
 				A[y]=j;
@@ -234,7 +247,40 @@ bool radix(vector<int> &A, const int d){
 
 }
 int* merge(int *A, int A_size, int *B, int B_size){
+	
+	int y=0;
+	int z=0;
+	int C_size = (A_size+B_size);
+	int *C = new int[C_size];
 
+	for (int i=0; i<A_size; i++){
+		if (A[i] > A[i]+1){
+			cout << "ERROR: integers are not sorted appropriately." << endl;
+			return NULL;		
+		}
+	}
+	//print(A,A_size);
+	for (int j=0; j<B_size; j++){
+		if (B[j] > B[j]+1){
+			cout << "ERROR: integers are not sorted appropriately." << endl;
+			return NULL;		
+		}
+	}
+	//print(B,B_size);
+	for (int k; k<C_size; k++){
+		if ((A[y] <= B[z] && y!=A_size) || z==B_size){
+			C[k] = A[y];
+			y++;
+			//cout << "y is :" << y << endl;
+		}
+		else {
+			C[k] = B[z];
+			z++;
+		}
+
+	}
+	
+	return C;
 }
 vector<int> stat(const vector<int> &A, const vector<int> &B, int k, string type){
 
