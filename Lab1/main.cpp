@@ -212,6 +212,7 @@ bool counting(vector<int> &A, const int k){
 	//check to see if A exists and k is in the range of 0 and 1000
 	if (A.size() != 0 && k >= 0 && k <= 1000){
 		int C[k];
+		int size = A.size();
 		int y=0;
 		int x=0;
 
@@ -220,9 +221,10 @@ bool counting(vector<int> &A, const int k){
 			C[h]=0;
 		}	
 		//for loop that crawls through A, making sure that A's value is the right size
-		for (int i=0; i<A.size(); i++){
+		for (int i=0; i<size; i++){
 			if (A[i] >= 0 && A[i] <= k){
-				//x holds the value at the index of A, then uses that to increment the value at that index of C
+				//x holds the value at the index of A, then uses that to 
+				//increment the value at that index of C
 				x = A[i];
 				C[x]++;
 			}
@@ -244,35 +246,81 @@ bool counting(vector<int> &A, const int k){
 }
 
 bool radix(vector<int> &A, const int d){
+	if (A.size() !=0 && d>=1 && d<10){
+		vector< vector <int> > bins(10);
+		int digit, x=0, z=0;
+		int bins_size = bins.size();
+		int A_size = A.size();
 
+		for (int i=0; i<d; i++){
+			for (int j=0; j<A_size; j++){
+				x = (A[j]/pow(10,i));
+				digit = x % 10;
+				
+				cout << "x is: " << x << " and digit is: " << digit << endl;
+				bins[digit].push_back(A[j]);
+			}
+		
+			for (int k=0; k<bins_size; k++){
+
+				int y=0;
+				for (int l=0; l<bins[k].size(); l++){
+					if (bins[k][l] !=0){
+						A[y] = bins[k][l];
+						bins[k][l] = 0;
+						cout << "bins[k][l] is: " << bins[k][l] << endl;
+						y++;
+					}
+				}
+			}
+		}
+
+		cout << endl << endl;
+		return true;
+	}
+	else return false;
 }
+
+/*
+This function merges two arrays that have been pre-sorted in numerical order into a single array, 
+then returns that array.
+
+Step 1: Verifies that array A is sorted properly.
+Step 2: Verifies that array B is sorted properly.
+Step 3: Compares the values between both arrays, then places the compared values into C.
+*/
 int* merge(int *A, int A_size, int *B, int B_size){
 	
 	int y=0;
 	int z=0;
+	
 	int C_size = (A_size+B_size);
 	int *C = new int[C_size];
-
+	
+	//for loop that verifies that A is sorted properly.
 	for (int i=0; i<A_size; i++){
 		if (A[i] > A[i]+1){
 			cout << "ERROR: integers are not sorted appropriately." << endl;
 			return NULL;		
 		}
 	}
-	//print(A,A_size);
+	//for loop that verifies that B is sorted properly.
 	for (int j=0; j<B_size; j++){
 		if (B[j] > B[j]+1){
 			cout << "ERROR: integers are not sorted appropriately." << endl;
 			return NULL;		
 		}
 	}
-	//print(B,B_size);
+	//for loop that compares the values in the indecies of A and B then places them into C
 	for (int k; k<C_size; k++){
+
+		//A's value is less than B's value AND A hasn't run out of values, OR B hasn't run out of values,
+		//add A's value to C and increase the iterator by 1.
 		if ((A[y] <= B[z] && y!=A_size) || z==B_size){
 			C[k] = A[y];
 			y++;
-			//cout << "y is :" << y << endl;
 		}
+		//If the above conditions are not met at any time, add B's value to C and increase it iterator by 1.
 		else {
 			C[k] = B[z];
 			z++;
@@ -283,5 +331,79 @@ int* merge(int *A, int A_size, int *B, int B_size){
 	return C;
 }
 vector<int> stat(const vector<int> &A, const vector<int> &B, int k, string type){
+	
+	vector<int> C;
+	bool setSuccess;
+	//int size = (A.size() + B.size());	
+	int x=0;
+	int A_size = A.size();
+	int B_size = B.size();
+	
+	
+
+
+	if (type == "intersection"){
+
+		//int y=0;
+		//int z=0;
+
+
+		for(int i=0; i<A_size;i++){
+			x = A[i];
+			for (int j=0; j<B_size;j++){
+				if (x == B[j]){
+					C.push_back(x);
+				} 
+			}
+		}
+
+	}
+	else if (type == "difference"){
+		
+		int y=0;
+		int z=0;
+
+		while(y<A_size && z<B_size){
+			if (A[y] < B[z]){
+				C.push_back(A[y]);
+				y++;
+			}
+			else if (B[z] < A[y]){
+				C.push_back(B[z]);
+				z++;
+			}
+			else{
+				y++;
+				z++;
+			}
+		}
+
+	}
+	else if (type == "union"){
+		int y=0;
+		int z=0;
+
+		while(y<A_size && z<B_size){
+			if (A[y] < B[z]){
+				C.push_back(A[y]);
+				y++;
+			}
+			else if (B[z] < A[y]){
+				C.push_back(B[z]);
+				z++;
+			}
+			else{
+
+				y++;
+				z++;
+			}
+		}
+	}
+
+	setSuccess = counting(C,k);
+	if (setSuccess){
+		return C;
+	}
+
 
 }
