@@ -300,14 +300,14 @@ int* merge(int *A, int A_size, int *B, int B_size){
 	//for loop that verifies that A is sorted properly.
 	for (int i=0; i<A_size; i++){
 		if (A[i] > A[i]+1){
-			cout << "ERROR: integers are not sorted appropriately." << endl;
+			cerr << "ERROR: integers are not sorted appropriately.";
 			return NULL;		
 		}
 	}
 	//for loop that verifies that B is sorted properly.
 	for (int j=0; j<B_size; j++){
 		if (B[j] > B[j]+1){
-			cout << "ERROR: integers are not sorted appropriately." << endl;
+			cerr << "ERROR: integers are not sorted appropriately.";
 			return NULL;		
 		}
 	}
@@ -330,22 +330,32 @@ int* merge(int *A, int A_size, int *B, int B_size){
 	
 	return C;
 }
+
+/*
+
+This function finds the intersection, union, and difference between two sets. 
+
+*/
 vector<int> stat(const vector<int> &A, const vector<int> &B, int k, string type){
 	
 	vector<int> C;
+	
+	vector<int> A_temp = A;
+	vector<int> B_temp = B;
+	
 	bool setSuccess;
-	//int size = (A.size() + B.size());	
-	int x=0;
+
 	int A_size = A.size();
 	int B_size = B.size();
-	
-	
 
+	counting(A_temp,k);
+	counting(B_temp,k);
 
+// if "intersection is chosen, two for loops compare all the items in A with every item in B. If they're equal, it pushes the value to C.
 	if (type == "intersection"){
 
-		//int y=0;
-		//int z=0;
+
+		int x=0;
 
 
 		for(int i=0; i<A_size;i++){
@@ -360,47 +370,55 @@ vector<int> stat(const vector<int> &A, const vector<int> &B, int k, string type)
 	}
 	else if (type == "difference"){
 		
-		int y=0;
-		int z=0;
+		int x=0;
 
-		while(y<A_size && z<B_size){
-			if (A[y] < B[z]){
-				C.push_back(A[y]);
-				y++;
-			}
-			else if (B[z] < A[y]){
-				C.push_back(B[z]);
-				z++;
-			}
-			else{
-				y++;
-				z++;
+
+		for(int i=0; i<A_size;i++){
+			x = A[i];
+			for (int j=0; j<B_size;j++){
+				if (x == B[j]){
+					continue;
+				} 
+
+					C.push_back(x);
+				
 			}
 		}
+
 
 	}
-	else if (type == "union"){
+	
+	//union puts one instance of each item in both A and B into C
+	else {
+		
 		int y=0;
 		int z=0;
 
-		while(y<A_size && z<B_size){
-			if (A[y] < B[z]){
-				C.push_back(A[y]);
+		while(true){
+			if ((A_temp[y] < B_temp[z]) || z==B_size){
+				C.push_back(A_temp[y]);
 				y++;
 			}
-			else if (B[z] < A[y]){
-				C.push_back(B[z]);
+			else if ((B_temp[z] < A_temp[y]) || y == A_size){
+				C.push_back(B_temp[z]);
 				z++;
 			}
 			else{
-
+				C.push_back(B_temp[z]);
 				y++;
 				z++;
 			}
+			if ((y == A_size) && (z == B_size)){
+				break;
+			}
+			
 		}
+
+
 	}
 
 	setSuccess = counting(C,k);
+
 	if (setSuccess){
 		return C;
 	}
